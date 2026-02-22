@@ -18,11 +18,11 @@ if (!function_exists('str_ends_with')) {
 ob_start(); // Global output buffer — prevents any stray output from breaking AJAX JSON responses
 
 // ─── DATABASE CONFIG ─────────────────────────────────────
-define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost');
+define('DB_HOST', getenv('MYSQLHOST')     ?: '127.0.0.1');
+define('DB_PORT', getenv('MYSQLPORT')     ?: '3306');
 define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
 define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
-define('DB_NAME', getenv('MYSQLDATABASE') ?: 'farmpos');
-define('DB_PORT', getenv('MYSQLPORT')     ?: '3306');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
 define('UPLOAD_DIR', __DIR__ . '/uploads/products/');
 define('UPLOAD_URL', 'uploads/products/');
 define('VERSION', '1.0.0');
