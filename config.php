@@ -18,10 +18,11 @@ if (!function_exists('str_ends_with')) {
 ob_start(); // Global output buffer — prevents any stray output from breaking AJAX JSON responses
 
 // ─── DATABASE CONFIG ─────────────────────────────────────
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'farmpos');
+define('DB_HOST', getenv('MYSQLHOST')     ?: '127.0.0.1');
+define('DB_PORT', getenv('MYSQLPORT')     ?: '3306');
+define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
 define('UPLOAD_DIR', __DIR__ . '/uploads/products/');
 define('UPLOAD_URL', 'uploads/products/');
 define('VERSION', '1.0.0');
@@ -57,14 +58,14 @@ if (isset($_SESSION['pos_id'])) {
 // ─── DATABASE CONNECTION ─────────────────────────────────
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
-        DB_USER, DB_PASS,
-        [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ]
-    );
+    "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+    DB_USER, DB_PASS,
+    [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ]
+);
 } catch (PDOException $e) {
     if (strpos($e->getMessage(), 'Unknown database') !== false || strpos($e->getMessage(), "Can't connect") !== false) {
         die('<html><head><title>Setup Required</title>
